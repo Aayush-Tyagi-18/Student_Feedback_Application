@@ -13,11 +13,8 @@ function validateFeedback({ name, course, feedback }) {
 
 if (typeof document !== 'undefined') {
   const form = document.getElementById('feedback-form');
-  const list = document.getElementById('feedback-list');
   const errorBox = document.getElementById('form-error');
-  const emptyMsg = document.getElementById('empty');
-  const count = document.getElementById('count');
-  const clearBtn = document.getElementById('clear-btn');
+  const successBox = document.getElementById('form-success');
 
   const load = () => {
     try {
@@ -27,42 +24,15 @@ if (typeof document !== 'undefined') {
     }
   };
 
-  const save = (items) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    } catch (e) { /* storage unavailable: entries last until page reload */ }
-  };
-
-  let items = load();
-
-  const render = () => {
-    list.replaceChildren();
-    // textContent (not innerHTML) keeps user input from injecting markup.
-    items.forEach((item) => {
-      const li = document.createElement('li');
-
-      const course = document.createElement('div');
-      course.className = 'entry-course';
-      course.textContent = item.course;
-
-      const meta = document.createElement('div');
-      meta.className = 'entry-meta';
-      meta.textContent = `${item.name} on ${new Date(item.date).toLocaleString()}`;
-
-      const text = document.createElement('p');
-      text.className = 'entry-text';
-      text.textContent = item.feedback;
-
-      li.append(course, meta, text);
-      list.append(li);
-    });
-    count.textContent = `(${items.length})`;
-    emptyMsg.hidden = items.length > 0;
-    clearBtn.hidden = items.length === 0;
+  const show = (box, message) => {
+    box.textContent = message;
+    box.hidden = false;
   };
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
+    successBox.hidden = true;
+
     const data = {
       name: form.name.value,
       course: form.course.value,
@@ -70,32 +40,31 @@ if (typeof document !== 'undefined') {
     };
     const errors = validateFeedback(data);
     if (errors.length) {
-      errorBox.textContent = errors.join(' ');
-      errorBox.hidden = false;
+      show(errorBox, errors.join(' '));
       return;
     }
     errorBox.hidden = true;
+
+    const items = load();
     items.unshift({
       name: data.name.trim(),
       course: data.course.trim(),
       feedback: data.feedback.trim(),
       date: new Date().toISOString(),
     });
-    save(items);
-    render();
-    form.reset();
-    form.name.focus();
-  });
 
-  clearBtn.addEventListener('click', () => {
-    if (confirm('Delete all submitted feedback?')) {
-      items = [];
-      save(items);
-      render();
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch (e) {
+      show(errorBox, 'Your browser blocked saving. Turn off private mode or allow site storage, then try again.');
+      return;
     }
+
+    show(successBox, `Thank you, ${data.name.trim()}. Your feedback for ${data.course.trim()} was submitted.`);
+    form.reset();
   });
 
-  render();
+  form.addEventListener('input', () => { successBox.hidden = true; });
 }
 
 if (typeof module !== 'undefined') {

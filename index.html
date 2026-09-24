@@ -10,7 +10,7 @@
   <main class="page">
     <header>
       <h1>Student Feedback</h1>
-      <p class="lead">Tell us how your course is going. Your feedback appears below as soon as you submit it.</p>
+      <p class="lead">Tell us how your course is going. Your feedback goes to the course admin.</p>
     </header>
 
     <form id="feedback-form" novalidate>
@@ -24,17 +24,11 @@
       <textarea id="feedback" name="feedback" rows="4" required></textarea>
 
       <p id="form-error" class="error" role="alert" hidden></p>
+      <p id="form-success" class="success" role="status" hidden></p>
       <button type="submit">Submit feedback</button>
     </form>
 
-    <section aria-labelledby="list-heading">
-      <div class="list-head">
-        <h2 id="list-heading">Submitted feedback <span id="count">(0)</span></h2>
-        <button type="button" id="clear-btn" class="link-btn">Clear all</button>
-      </div>
-      <p id="empty" class="empty">No feedback yet. Submit the form above to add the first entry.</p>
-      <ul id="feedback-list"></ul>
-    </section>
+    <p class="footer"><a href="admin.html">Admin panel</a></p>
   </main>
   <script src="script.js"></script>
 </body>

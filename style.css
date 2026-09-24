@@ -11,6 +11,8 @@
 
 * { box-sizing: border-box; }
 
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   background: var(--bg);
@@ -25,6 +27,9 @@ h1, h2 { font-family: Georgia, "Times New Roman", serif; margin: 0; }
 h1 { font-size: 2.1rem; }
 h2 { font-size: 1.3rem; }
 .lead { color: var(--muted); margin: 0.5rem 0 2rem; }
+
+a { color: var(--accent-dark); }
+.footer { margin-top: 2rem; }
 
 form {
   background: var(--surface);
@@ -64,10 +69,35 @@ button[type="submit"] {
 button[type="submit"]:hover { background: var(--accent-dark); }
 
 .error { color: var(--danger); margin: 0.5rem 0 0; }
+.success {
+  margin: 0.5rem 0 0;
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  background: #e6f4f1;
+  color: var(--accent-dark);
+}
 
-section { margin-top: 2.5rem; }
-.list-head { display: flex; justify-content: space-between; align-items: baseline; }
+section { margin-top: 0; }
+.list-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.toolbar { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
 #count { color: var(--muted); font-weight: normal; }
+
+.btn {
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.btn:hover { border-color: var(--accent); }
 
 .link-btn {
   background: none;
@@ -93,3 +123,4 @@ li {
 .entry-course { font-weight: 600; }
 .entry-meta { color: var(--muted); font-size: 0.875rem; margin: 0.15rem 0 0.6rem; }
 .entry-text { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.delete-btn { margin-top: 0.6rem; padding: 0; font-size: 0.875rem; }
