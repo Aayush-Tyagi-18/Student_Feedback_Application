@@ -23,3 +23,11 @@ test('rejects feedback that is too short', () => {
 test('reports every problem at once', () => {
   assert.strictEqual(validateFeedback({ name: '', course: '', feedback: '' }).length, 3);
 });
+
+test('anonymous feedback does not need a name', () => {
+  assert.deepStrictEqual(validateFeedback({ ...valid, name: '', anonymous: true }), []);
+});
+
+test('anonymous feedback still needs a course', () => {
+  assert.strictEqual(validateFeedback({ ...valid, name: '', course: '', anonymous: true }).length, 1);
+});

@@ -53,6 +53,17 @@ input, textarea {
 
 textarea { resize: vertical; }
 
+label.check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+  font-weight: normal;
+  cursor: pointer;
+}
+label.check input { width: auto; margin: 0; accent-color: var(--accent); }
+input:disabled { background: var(--bg); cursor: not-allowed; }
+
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
 button[type="submit"] {

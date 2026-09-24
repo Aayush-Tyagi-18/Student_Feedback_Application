@@ -1,9 +1,9 @@
 const STORAGE_KEY = 'studentFeedback';
 
 // Pure function, so it can be unit-tested in CI without a browser.
-function validateFeedback({ name, course, feedback }) {
+function validateFeedback({ name, course, feedback, anonymous }) {
   const errors = [];
-  if (!name || !name.trim()) errors.push('Enter your name.');
+  if (!anonymous && (!name || !name.trim())) errors.push('Enter your name, or tick "Submit anonymously".');
   if (!course || !course.trim()) errors.push('Enter your course.');
   if (!feedback || feedback.trim().length < 10) {
     errors.push('Write at least 10 characters of feedback.');
@@ -15,6 +15,15 @@ if (typeof document !== 'undefined') {
   const form = document.getElementById('feedback-form');
   const errorBox = document.getElementById('form-error');
   const successBox = document.getElementById('form-success');
+  const nameInput = document.getElementById('name');
+  const anonBox = document.getElementById('anonymous');
+
+  // Anonymous feedback: the name field is switched off and cleared, so it is never saved.
+  const syncAnonymous = () => {
+    if (anonBox.checked) nameInput.value = '';
+    nameInput.disabled = anonBox.checked;
+  };
+  anonBox.addEventListener('change', syncAnonymous);
 
   const load = () => {
     try {
@@ -37,6 +46,7 @@ if (typeof document !== 'undefined') {
       name: form.name.value,
       course: form.course.value,
       feedback: form.feedback.value,
+      anonymous: anonBox.checked,
     };
     const errors = validateFeedback(data);
     if (errors.length) {
@@ -47,7 +57,8 @@ if (typeof document !== 'undefined') {
 
     const items = load();
     items.unshift({
-      name: data.name.trim(),
+      name: data.anonymous ? '' : data.name.trim(),
+      anonymous: data.anonymous,
       course: data.course.trim(),
       feedback: data.feedback.trim(),
       date: new Date().toISOString(),
@@ -60,8 +71,10 @@ if (typeof document !== 'undefined') {
       return;
     }
 
-    show(successBox, `Thank you, ${data.name.trim()}. Your feedback for ${data.course.trim()} was submitted.`);
+    const who = data.anonymous ? 'Thank you.' : `Thank you, ${data.name.trim()}.`;
+    show(successBox, `${who} Your ${data.anonymous ? 'anonymous ' : ''}feedback for ${data.course.trim()} was submitted.`);
     form.reset();
+    syncAnonymous();
   });
 
   form.addEventListener('input', () => { successBox.hidden = true; });

@@ -11,8 +11,13 @@ function csvCell(value) {
   return '"' + text.replace(/"/g, '""') + '"';
 }
 
+// Older entries have no "anonymous" flag, so they show their saved name.
+function displayName(item) {
+  return item.anonymous ? 'Anonymous' : item.name;
+}
+
 function toCsv(items) {
-  const rows = items.map((i) => [i.date, i.name, i.course, i.feedback]);
+  const rows = items.map((i) => [i.date, displayName(i), i.course, i.feedback]);
   return [['Date', 'Name', 'Course', 'Feedback'], ...rows]
     .map((row) => row.map(csvCell).join(','))
     .join('\r\n');
@@ -67,7 +72,7 @@ if (typeof document !== 'undefined') {
 
       const meta = document.createElement('div');
       meta.className = 'entry-meta';
-      meta.textContent = `${item.name} on ${new Date(item.date).toLocaleString()}`;
+      meta.textContent = `${displayName(item)} on ${new Date(item.date).toLocaleString()}`;
 
       const text = document.createElement('p');
       text.className = 'entry-text';
@@ -149,5 +154,5 @@ if (typeof document !== 'undefined') {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = { csvCell, toCsv };
+  module.exports = { csvCell, toCsv, displayName };
 }
