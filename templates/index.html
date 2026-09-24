@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Course feedback</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main>
+    <h1>Course feedback</h1>
+    <p class="lead">Tell us what worked and what didn't in your course.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, text in messages %}
+        <p class="flash {{ category }}" role="status">{{ text }}</p>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="post" action="{{ url_for('submit') }}">
+      <label>Name
+        <input type="text" name="name" maxlength="80" required>
+      </label>
+      <label>Course
+        <input type="text" name="course" maxlength="120" required>
+      </label>
+      <label>Feedback
+        <textarea name="message" rows="4" maxlength="1000" required></textarea>
+      </label>
+      <button type="submit">Send feedback</button>
+    </form>
+
+    <h2>Submitted feedback</h2>
+    {% if entries %}
+      <ul class="entries">
+        {% for e in entries %}
+          <li>
+            <p class="msg">{{ e.message }}</p>
+            <p class="meta">{{ e.name }} on {{ e.course }}, {{ e.created_at }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty">No feedback yet. Be the first to submit.</p>
+    {% endif %}
+  </main>
+</body>
+</html>
