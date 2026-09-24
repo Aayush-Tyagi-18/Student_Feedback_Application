@@ -1,0 +1,95 @@
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --ink: #1b2a41;
+  --muted: #5c6b7f;
+  --line: #d6dde5;
+  --accent: #0f766e;
+  --accent-dark: #0b5a54;
+  --danger: #b3261e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+.page { max-width: 640px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+
+h1, h2 { font-family: Georgia, "Times New Roman", serif; margin: 0; }
+h1 { font-size: 2.1rem; }
+h2 { font-size: 1.3rem; }
+.lead { color: var(--muted); margin: 0.5rem 0 2rem; }
+
+form {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+label { font-weight: 600; margin-top: 0.6rem; }
+
+input, textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: inherit;
+  color: inherit;
+}
+
+textarea { resize: vertical; }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+button[type="submit"] {
+  margin-top: 1rem;
+  padding: 0.7rem 1rem;
+  border: 0;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+button[type="submit"]:hover { background: var(--accent-dark); }
+
+.error { color: var(--danger); margin: 0.5rem 0 0; }
+
+section { margin-top: 2.5rem; }
+.list-head { display: flex; justify-content: space-between; align-items: baseline; }
+#count { color: var(--muted); font-weight: normal; }
+
+.link-btn {
+  background: none;
+  border: 0;
+  color: var(--danger);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.empty { color: var(--muted); }
+
+ul { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.9rem; }
+
+li {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 6px;
+  padding: 1rem 1.1rem;
+}
+
+.entry-course { font-weight: 600; }
+.entry-meta { color: var(--muted); font-size: 0.875rem; margin: 0.15rem 0 0.6rem; }
+.entry-text { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }

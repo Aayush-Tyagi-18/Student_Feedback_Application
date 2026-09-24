@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Feedback</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <header>
+      <h1>Student Feedback</h1>
+      <p class="lead">Tell us how your course is going. Your feedback appears below as soon as you submit it.</p>
+    </header>
+
+    <form id="feedback-form" novalidate>
+      <label for="name">Your name</label>
+      <input type="text" id="name" name="name" autocomplete="name" required>
+
+      <label for="course">Course</label>
+      <input type="text" id="course" name="course" placeholder="e.g. Data Structures" required>
+
+      <label for="feedback">Feedback</label>
+      <textarea id="feedback" name="feedback" rows="4" required></textarea>
+
+      <p id="form-error" class="error" role="alert" hidden></p>
+      <button type="submit">Submit feedback</button>
+    </form>
+
+    <section aria-labelledby="list-heading">
+      <div class="list-head">
+        <h2 id="list-heading">Submitted feedback <span id="count">(0)</span></h2>
+        <button type="button" id="clear-btn" class="link-btn">Clear all</button>
+      </div>
+      <p id="empty" class="empty">No feedback yet. Submit the form above to add the first entry.</p>
+      <ul id="feedback-list"></ul>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
