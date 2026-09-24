@@ -28,10 +28,12 @@ jobs:
           node-version: 20
 
       - name: Lint HTML
-        run: npx --yes htmlhint index.html
+        run: npx --yes htmlhint index.html admin.html
 
       - name: Check JavaScript syntax
-        run: node --check script.js
+        run: |
+          node --check script.js
+          node --check admin.js
 
       - name: Run unit tests
         run: node --test
@@ -39,7 +41,7 @@ jobs:
       - name: Package site
         run: |
           mkdir dist
-          cp index.html style.css script.js dist/
+          cp index.html admin.html style.css script.js admin.js dist/
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
