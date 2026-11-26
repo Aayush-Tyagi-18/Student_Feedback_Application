@@ -38,6 +38,22 @@ jobs:
       - name: Run unit tests
         run: node --test
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+
+      - name: Maven build
+        run: mvn -B clean package -DskipNodeTests=true
+
+      - name: Upload WAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: student-feedback-war
+          path: target/*.war
+
       - name: Package site
         run: |
           mkdir dist
@@ -47,6 +63,26 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+
+  # Builds the Docker image and smoke-tests the container
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t student-feedback-app:latest .
+
+      - name: Run container and smoke test
+        run: |
+          docker run -d --name feedback -p 8080:8080 student-feedback-app:latest
+          for i in $(seq 1 30); do
+            curl -fs http://localhost:8080/ > /dev/null && break
+            sleep 2
+          done
+          curl -fs http://localhost:8080/ | grep -i "Student Feedback"
+          docker ps
 
   # CD: deploys to GitHub Pages, only from main and only if CI passed
   deploy:
