@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.student</groupId>
+  <artifactId>student-feedback-app</artifactId>
+  <version>1.0.0</version>
+  <packaging>war</packaging>
+  <name>Student Feedback Application</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- set to true where Node.js is not installed (e.g. inside the Docker build) -->
+    <skipNodeTests>false</skipNodeTests>
+  </properties>
+
+  <build>
+    <finalName>student-feedback-app</finalName>
+    <plugins>
+      <!-- Runs the existing Node unit tests during `mvn test` -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>node-unit-tests</id>
+            <phase>test</phase>
+            <goals><goal>exec</goal></goals>
+            <configuration>
+              <skip>${skipNodeTests}</skip>
+              <executable>node</executable>
+              <arguments>
+                <argument>--test</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Packages the static site (HTML/CSS/JS) as a WAR: target/student-feedback-app.war -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.4.0</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+          <warSourceDirectory>${project.basedir}</warSourceDirectory>
+          <warSourceIncludes>*.html,*.css,*.js</warSourceIncludes>
+          <warSourceExcludes>*.test.js</warSourceExcludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
